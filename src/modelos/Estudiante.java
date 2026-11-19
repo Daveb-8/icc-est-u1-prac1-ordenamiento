@@ -1,3 +1,4 @@
+package modelos;
 import java.util.Comparator;
 
 public class Estudiante implements Comparable<Estudiante> {

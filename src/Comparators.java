@@ -2,15 +2,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import modelos.Estudiante;
+
 public class Comparators {
 
   List<Estudiante> estudiantes;
   //Se puede crear la lista como atributo aqui
 
-
-
   public Comparators() {
-    List<Estudiante> estudiantes = new ArrayList<>(List.of(
+    this.estudiantes = new ArrayList<>(List.of(
     new Estudiante("E014", "Ana",    20, 8.5, "Computacion"),
     new Estudiante("E003", "Luis",   19, 7.8, "Electronica"),
     new Estudiante("E018", "Maria",  21, 9.2, "Computacion"),
@@ -34,12 +34,20 @@ public class Comparators {
 ));
 }
 
+ private void print(List<Estudiante> lista) {
+        for(Estudiante e: lista){
+            System.out.println(e);
+        }
+        System.out.println("---------------------------------------");
+    }
+
 public List<Estudiante> c1() {
   List<Estudiante> listac1 = new ArrayList<>(estudiantes);
   System.out.println("Critero 1: Codigo ascendente");
   // Uso de Comparable en clase Estudiante y su ordenamiento natural
   // Ordenamiento natural -> codigo ascendente
   listac1.sort(null);
+  print(listac1);
   return listac1;
 }
 
@@ -62,6 +70,7 @@ public List<Estudiante> c2() {
 
   };
   listac2.sort(comparador_nc);
+  print(listac2);
   return listac2;
 }
 
@@ -71,6 +80,7 @@ public List<Estudiante> c3() {
   // comparing Double y referencia a metodo
   Comparator<Estudiante> comparador_not = Comparator.comparingDouble(Estudiante::getNota);
   listac3.sort(comparador_not);
+  print(listac3);
   return listac3;
 }
 
@@ -82,6 +92,7 @@ public List<Estudiante> c4() {
                    .reversed()
                    .thenComparing(e -> e.getNombre());
   listac4.sort(comparador_notd_na);
+  print(listac4);
   return listac4;
 }
 
@@ -92,6 +103,7 @@ public List<Estudiante> c5() {
   Comparator<Estudiante> comparador_ea_nd = Comparator.comparingInt(Estudiante::getEdad)
             .thenComparing((e1,e2) -> e2.getNombre().compareTo(e1.getNombre()));
   listac5.sort(comparador_ea_nd);
+  print(listac5);
   return listac5;
 }
 public List<Estudiante> c6() {
@@ -104,11 +116,35 @@ public List<Estudiante> c6() {
               .thenComparing(e-> e.getNombre())
               .thenComparing(e-> e.getCodigo());
 listac6.sort(comparador6);
+print(listac6);
 return listac6;
 }
 public List<Estudiante> c7() {
-  List<Estudiante> listac6 = new ArrayList<>(estudiantes);
-  System.out.println("Critero 6: Nota ajustada descendente,nombre ascendente,codigo ascendente");
-  return listac6;
+  List<Estudiante> listac7 = new ArrayList<>(estudiantes);
+  System.out.println("Critero 7: Nota ajustada descendente,nombre ascendente,codigo ascendente");
+  //Lambda que calcule Math.min(10.0, nota + 0.5) 
+  // para estudiantes de Computacion y conserve la nota de las demás carreras.
+  Comparator<Estudiante> comparadorC7 = Comparator.<Estudiante>comparingDouble(e -> {
+    double notaAjustada = e.getNota();
+    if(e.getCarrera().equals("Computacion")) {
+      notaAjustada = Math.min(10.0,notaAjustada + 0.5);
+    }
+    return notaAjustada;
+  }
+ ).reversed()
+  .thenComparing(Estudiante::getNombre)
+  .thenComparing(Estudiante::getCodigo); 
+
+  listac7.sort(comparadorC7);
+  for (Estudiante e : listac7) {
+        double notaAjustada = e.getNota(); 
+        if (e.getCarrera().equals("Computacion")) { 
+            notaAjustada = Math.min(10.0, notaAjustada + 0.5); 
+        }
+        System.out.println(e + " | Nota ajustada: " + notaAjustada);
+  }
+  return listac7;
+
 }
+
 }

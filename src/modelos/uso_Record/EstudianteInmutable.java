@@ -1,4 +1,4 @@
-package uso_Record;
+package modelos.uso_Record;
 
 public record EstudianteInmutable(String codigo, String nombre, int edad, double nota, String carrera) implements
                                     Comparable<EstudianteInmutable> {
