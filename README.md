@@ -72,14 +72,14 @@ icc-est-u1-prac1-or.../
 | C7 | [Ordenamiento por Nota ajustada descendente,nombre ascendente,codigo ascendente] |
 
 ## Pruebas
-Ver [Evidencias/assets](evidencias/Tabla_de_Pruebas.md).
+Ver [Evidencias/assets](Evidencias/Tabla_de_Pruebas.md).
 
 
 ## Conclusiones 
 1. Tanto Comparable como Comparator son interfaces dentro del lenguaje de Java. Comparable<T> define el orden natural de los objetos de una clase. ES por eso que es implementada por dicha clase mediante 'implements'. Y utiliza el metodo compareTo(), debido a que compara objetos a,b.
 Por otro lado, Comparator<T> define uno o incluso varios criterios de ordenamiento y puede existir fuera de la clase  la que se quiere comparar sus atributos, en una expresion lambda o en metodos propios.Y utiliza el metodo de compare(T a, T b)
 2. Sabemos que cuando dos o mas elementos son considerados iguales a = b dentro del criterio principal de ordenamiento, se agrega un segundo criterio para 'desempatar'. De esta manera se puede ordenar a los datos empatados dentro del dicho criterio secundario.
-3. Sabemos que la estabilida juega un papel dentro del ordenamiento de listas, arreglos,etc. Y cuando ningun criterio existente logra desempatar a dos o mas elementos, el algoritmo dentro de Comparable y Comparator al ser de ordenamiento estable conservan el orden relativo original que traian previamente en la lista como en el C3  [![alt text](Evidencias/assets/c3_terminal.png)][![alt text](Evidencias/assets/listaOriginal.png)]
+3. Sabemos que la estabilida juega un papel dentro del ordenamiento de listas, arreglos,etc. Y cuando ningun criterio existente logra desempatar a dos o mas elementos, el algoritmo dentro de Comparable y Comparator al ser de ordenamiento estable conservan el orden relativo original que traian previamente en la lista como en el C3.
 
 
 
