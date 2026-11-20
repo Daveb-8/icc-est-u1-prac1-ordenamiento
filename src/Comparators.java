@@ -34,12 +34,26 @@ public class Comparators {
 ));
 }
 
- private void print(List<Estudiante> lista) {
-        for(Estudiante e: lista){
-            System.out.println(e);
+  public void print(List<Estudiante> lista) {
+          for(Estudiante e: lista){
+              System.out.println(e);
+          }
+          System.out.println("---------------------------------------");
+  }
+  public List<Estudiante> probarEstabilidadC3() {
+    List<Estudiante> ordenada = c3(); 
+    List<Estudiante> soloNotaOchoCinco = new ArrayList<>();
+
+    for (Estudiante est : ordenada) {
+        if (est.getNota() == 8.5) {
+            soloNotaOchoCinco.add(est);
         }
-        System.out.println("---------------------------------------");
     }
+
+    System.out.println("Estabilidad C3 (nota 8.5):");
+    print(soloNotaOchoCinco);
+    return soloNotaOchoCinco;
+}
 
 public List<Estudiante> c1() {
   List<Estudiante> listac1 = new ArrayList<>(estudiantes);
@@ -72,79 +86,125 @@ public List<Estudiante> c2() {
   listac2.sort(comparador_nc);
   print(listac2);
   return listac2;
+  }
+
+  public List<Estudiante> c2ConReferencias() {
+    List<Estudiante> listac2 = new ArrayList<>(estudiantes);
+    System.out.println("Critero 2 con Referencias: Nombre ascendente, Codigo ascendente");
+    // Comparator con lambda de dos parametros (manual)
+    Comparator<Estudiante> comparadorref_nc = Comparator.comparing(Estudiante::getNombre)
+                                                        .thenComparing(Estudiante::getCodigo);
+    listac2.sort(comparadorref_nc);
+    print(listac2);
+    return listac2;
+
+  }
+  public List<Estudiante> c3() {
+    List<Estudiante> listac3 = new ArrayList<>(estudiantes);
+    System.out.println("Critero 3: Nota ascendente, sin desempate");
+    // comparing Double y referencia a metodo
+    Comparator<Estudiante> comparador_not = Comparator.comparingDouble(Estudiante::getNota);
+    listac3.sort(comparador_not);
+    print(listac3);
+    return listac3;
+  }
+
+  public List<Estudiante> c4() {
+    List<Estudiante> listac4 = new ArrayList<>(estudiantes);
+    System.out.println("Critero 4: Nota descendente, nombre ascendente");
+    // reversed y thenComparing
+    Comparator<Estudiante> comparador_notd_na = Comparator.comparingDouble(Estudiante::getNota)
+                    .reversed()
+                    .thenComparing(e -> e.getNombre());
+    listac4.sort(comparador_notd_na);
+    print(listac4);
+    return listac4;
+  }
+
+  public List<Estudiante> c4(List<Estudiante> lista) {
+    List<Estudiante> copia = new ArrayList<>(lista);
+    Comparator<Estudiante> comparador_notd_na = Comparator.comparingDouble(Estudiante::getNota)
+                    .reversed()
+                    .thenComparing(e -> e.getNombre());
+    copia.sort(comparador_notd_na); 
+    System.out.println("C4 sobre lista formada por E014, E005, E010");
+    print(copia);
+    return copia;
 }
 
-public List<Estudiante> c3() {
-  List<Estudiante> listac3 = new ArrayList<>(estudiantes);
-  System.out.println("Critero 3: Nota ascendente, sin desempate");
-  // comparing Double y referencia a metodo
-  Comparator<Estudiante> comparador_not = Comparator.comparingDouble(Estudiante::getNota);
-  listac3.sort(comparador_not);
-  print(listac3);
-  return listac3;
-}
+  public List<Estudiante> c5() {
+    List<Estudiante> listac5 = new ArrayList<>(estudiantes);
+    System.out.println("Critero 5: Edad ascendente, nombre descendente");
+    // comparingInt y sentido independiente
+    Comparator<Estudiante> comparador_ea_nd = Comparator.comparingInt(Estudiante::getEdad)
+              .thenComparing((e1,e2) -> e2.getNombre().compareTo(e1.getNombre()));
+    listac5.sort(comparador_ea_nd);
+    print(listac5);
+    return listac5;
+  }
 
-public List<Estudiante> c4() {
-  List<Estudiante> listac4 = new ArrayList<>(estudiantes);
-  System.out.println("Critero 4: Nota descendente, nombre ascendente");
-  // reversed y thenComparing
-  Comparator<Estudiante> comparador_notd_na = Comparator.comparingDouble(Estudiante::getNota)
-                   .reversed()
-                   .thenComparing(e -> e.getNombre());
-  listac4.sort(comparador_notd_na);
-  print(listac4);
-  return listac4;
-}
+  public List<Estudiante> pruebaInvertirC4() {
+    List<Estudiante> lista = new ArrayList<>(estudiantes);
+    System.out.println("Critero Invertido C4");
+    //uso del .reversed() al final de toda la comparacion 
+    Comparator<Estudiante> comparadorinv_notd_na = Comparator.comparingDouble(Estudiante::getNota)
+                    .thenComparing(e -> e.getNombre())
+                    .reversed();
+    lista.sort(comparadorinv_notd_na);
+    print(lista);
+    return(lista);
+  }
+  public List<Estudiante> pruebaInvertirC5() {
+    List<Estudiante> lista = new ArrayList<>(estudiantes);
+    System.out.println("Critero Invertido C5");
+    //uso del .reversed() al final de toda la comparacion 
+    Comparator<Estudiante> comparadorinv_ea_nd = Comparator.comparingInt(Estudiante::getEdad)
+              .thenComparing((e1,e2) -> e2.getNombre().compareTo(e1.getNombre()))
+              .reversed();
+    lista.sort(comparadorinv_ea_nd);
+    print(lista);
+    return(lista);
+  }
 
-public List<Estudiante> c5() {
-  List<Estudiante> listac5 = new ArrayList<>(estudiantes);
-  System.out.println("Critero 5: Edad ascendente, nombre descendente");
-  // comparingInt y sentido independiente
-  Comparator<Estudiante> comparador_ea_nd = Comparator.comparingInt(Estudiante::getEdad)
-            .thenComparing((e1,e2) -> e2.getNombre().compareTo(e1.getNombre()));
-  listac5.sort(comparador_ea_nd);
-  print(listac5);
-  return listac5;
-}
-public List<Estudiante> c6() {
-  List<Estudiante> listac6 = new ArrayList<>(estudiantes);
-  System.out.println("Critero 6: Carrera ascendente, nota descendente, nombre ascendente,codigo ascendente");
-  // Composicion de cuatro criterios
-  Comparator<Estudiante> comparador6 = Comparator.comparing(Estudiante::getCarrera)
-              //Se debe inlcuir el Comparator. si el orden no es natural
-              .thenComparing(Comparator.comparingDouble(Estudiante::getNota).reversed())
-              .thenComparing(e-> e.getNombre())
-              .thenComparing(e-> e.getCodigo());
-listac6.sort(comparador6);
-print(listac6);
-return listac6;
-}
-public List<Estudiante> c7() {
-  List<Estudiante> listac7 = new ArrayList<>(estudiantes);
-  System.out.println("Critero 7: Nota ajustada descendente,nombre ascendente,codigo ascendente");
-  //Lambda que calcule Math.min(10.0, nota + 0.5) 
-  // para estudiantes de Computacion y conserve la nota de las demás carreras.
-  Comparator<Estudiante> comparadorC7 = Comparator.<Estudiante>comparingDouble(e -> {
-    double notaAjustada = e.getNota();
-    if(e.getCarrera().equals("Computacion")) {
-      notaAjustada = Math.min(10.0,notaAjustada + 0.5);
+  public List<Estudiante> c6() {
+    List<Estudiante> listac6 = new ArrayList<>(estudiantes);
+    System.out.println("Critero 6: Carrera ascendente, nota descendente, nombre ascendente,codigo ascendente");
+    // Composicion de cuatro criterios
+    Comparator<Estudiante> comparador6 = Comparator.comparing(Estudiante::getCarrera)
+                //Se debe inlcuir el Comparator. si el orden no es natural
+                .thenComparing(Comparator.comparingDouble(Estudiante::getNota).reversed())
+                .thenComparing(e-> e.getNombre())
+                .thenComparing(e-> e.getCodigo());
+  listac6.sort(comparador6);
+  print(listac6);
+  return listac6;
+  }
+  public List<Estudiante> c7() {
+    List<Estudiante> listac7 = new ArrayList<>(estudiantes);
+    System.out.println("Critero 7: Nota ajustada descendente,nombre ascendente,codigo ascendente");
+    //Lambda que calcule Math.min(10.0, nota + 0.5) 
+    // para estudiantes de Computacion y conserve la nota de las demás carreras.
+    Comparator<Estudiante> comparadorC7 = Comparator.<Estudiante>comparingDouble(e -> {
+      double notaAjustada = e.getNota();
+      if(e.getCarrera().equals("Computacion")) {
+        notaAjustada = Math.min(10.0,notaAjustada + 0.5);
+      }
+      return notaAjustada;
     }
-    return notaAjustada;
-  }
- ).reversed()
-  .thenComparing(Estudiante::getNombre)
-  .thenComparing(Estudiante::getCodigo); 
+  ).reversed()
+    .thenComparing(Estudiante::getNombre)
+    .thenComparing(Estudiante::getCodigo); 
 
-  listac7.sort(comparadorC7);
-  for (Estudiante e : listac7) {
-        double notaAjustada = e.getNota(); 
-        if (e.getCarrera().equals("Computacion")) { 
-            notaAjustada = Math.min(10.0, notaAjustada + 0.5); 
-        }
-        System.out.println(e + " | Nota ajustada: " + notaAjustada);
-  }
-  return listac7;
+    listac7.sort(comparadorC7);
+    for (Estudiante e : listac7) {
+          double notaAjustada = e.getNota(); 
+          if (e.getCarrera().equals("Computacion")) { 
+              notaAjustada = Math.min(10.0, notaAjustada + 0.5); 
+          }
+          System.out.println(e + " | Nota ajustada: " + notaAjustada);
+    }
+    return listac7;
 
-}
+  }
 
 }
